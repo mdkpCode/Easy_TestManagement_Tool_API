@@ -18,6 +18,14 @@ namespace Easy_TestManagement_Tool.Data
             optionsBuilder.UseSqlServer("Server=.\\SQLExpress;Database=testmanagementdb;Trusted_Connection=true;TrustServerCertificate=true");
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<TestRun>()
+                .HasKey(t => t.Id);
+        }
+
 
 
         // Tables

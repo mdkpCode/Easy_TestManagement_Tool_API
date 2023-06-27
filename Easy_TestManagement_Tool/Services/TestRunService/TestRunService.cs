@@ -11,18 +11,14 @@ namespace Easy_TestManagement_Tool.Services.TestRunService
             this.context = context;
         }
 
-        public async Task<List<TestRun>> CreateTestRun(TestRun testRun)
+        public async Task<TestRun> GetSingleTestRun(int id)
         {
-            context.TB_TestRuns.Add(testRun);
-            await context.SaveChangesAsync();
+            var testRun = await context.TB_TestRuns.SingleOrDefaultAsync(x => x.Id == id);
 
-            return await context.TB_TestRuns.ToListAsync();
+            if (testRun == null)
+                return null;
 
-        }
-
-        public Task<TestRun> DeleteTestRun(int id)
-        {
-            throw new NotImplementedException();
+            return testRun;
         }
 
         public async Task<List<TestRun>> GetTestRuns()
@@ -35,7 +31,29 @@ namespace Easy_TestManagement_Tool.Services.TestRunService
             return testRuns;
         }
 
-        public Task<List<TestRun>> UpdateTestRun(int id, TestRun request)
+        public async Task<List<TestRun>> CreateTestRun(TestRun testRun)
+        {
+            context.TB_TestRuns.Add(testRun);
+            await context.SaveChangesAsync();
+
+            return await context.TB_TestRuns.ToListAsync();
+
+        }
+
+        public async Task<TestRun> DeleteTestRun(int id)
+        {
+            var testRun = await context.TB_TestRuns.SingleOrDefaultAsync(x => x.Id == id);
+
+            if (testRun == null)
+                return null;
+
+            context.Remove(testRun);
+            await context.SaveChangesAsync();
+
+            return testRun;
+        }
+
+        public async Task<List<TestRun>> UpdateTestRun(int id, TestRun request)
         {
             throw new NotImplementedException();
         }

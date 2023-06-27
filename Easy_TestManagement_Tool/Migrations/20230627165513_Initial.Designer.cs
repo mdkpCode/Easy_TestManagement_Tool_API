@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Easy_TestManagement_Tool.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230624130439_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20230627165513_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,23 @@ namespace Easy_TestManagement_Tool.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Easy_TestManagement_Tool.Models.EnumModels.TestStatusDictionary", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TestStatusDictionary");
+                });
 
             modelBuilder.Entity("Easy_TestManagement_Tool.Models.TestCase", b =>
                 {
@@ -51,7 +68,12 @@ namespace Easy_TestManagement_Tool.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
+                    b.Property<int?>("TestCaseOnTestRunId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("TestCaseOnTestRunId");
 
                     b.ToTable("TB_TestCases");
                 });
@@ -64,19 +86,19 @@ namespace Easy_TestManagement_Tool.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("TestCaseId")
-                        .HasColumnType("int");
+                    b.Property<long>("StatusId")
+                        .HasColumnType("bigint");
 
-                    b.Property<int>("TestRunId")
+                    b.Property<int?>("TestRunId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TestCaseId");
+                    b.HasIndex("StatusId");
 
                     b.HasIndex("TestRunId");
 
-                    b.ToTable("TestRunTestCases");
+                    b.ToTable("TB_TestCaseOnTestRun");
                 });
 
             modelBuilder.Entity("Easy_TestManagement_Tool.Models.TestRun", b =>
@@ -125,23 +147,26 @@ namespace Easy_TestManagement_Tool.Migrations
                     b.ToTable("TB_TestSteps");
                 });
 
+            modelBuilder.Entity("Easy_TestManagement_Tool.Models.TestCase", b =>
+                {
+                    b.HasOne("Easy_TestManagement_Tool.Models.TestCaseOnTestRun", null)
+                        .WithMany("TestCase")
+                        .HasForeignKey("TestCaseOnTestRunId");
+                });
+
             modelBuilder.Entity("Easy_TestManagement_Tool.Models.TestCaseOnTestRun", b =>
                 {
-                    b.HasOne("Easy_TestManagement_Tool.Models.TestCase", "TestCase")
+                    b.HasOne("Easy_TestManagement_Tool.Models.EnumModels.TestStatusDictionary", "Status")
                         .WithMany()
-                        .HasForeignKey("TestCaseId")
+                        .HasForeignKey("StatusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Easy_TestManagement_Tool.Models.TestRun", "TestRun")
+                    b.HasOne("Easy_TestManagement_Tool.Models.TestRun", null)
                         .WithMany("TestCases")
-                        .HasForeignKey("TestRunId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TestRunId");
 
-                    b.Navigation("TestCase");
-
-                    b.Navigation("TestRun");
+                    b.Navigation("Status");
                 });
 
             modelBuilder.Entity("Easy_TestManagement_Tool.Models.TestStep", b =>
@@ -154,6 +179,11 @@ namespace Easy_TestManagement_Tool.Migrations
             modelBuilder.Entity("Easy_TestManagement_Tool.Models.TestCase", b =>
                 {
                     b.Navigation("Steps");
+                });
+
+            modelBuilder.Entity("Easy_TestManagement_Tool.Models.TestCaseOnTestRun", b =>
+                {
+                    b.Navigation("TestCase");
                 });
 
             modelBuilder.Entity("Easy_TestManagement_Tool.Models.TestRun", b =>

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Easy_TestManagement_Tool.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230624140431_NewTablesHasBeenAddedFixX")]
-    partial class NewTablesHasBeenAddedFixX
+    [Migration("20230627170306_Initial2")]
+    partial class Initial2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -9,6 +9,7 @@ using Easy_TestManagement_Tool.Services.TestStepService;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Hosting;
 using Your.Namespace;
+using Easy_TestManagement_Tool.Services.ReportService;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -23,6 +24,7 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddScoped<ITestCaseService, TestCaseService>();
 builder.Services.AddScoped<ITestRunService, TestRunService>();
 builder.Services.AddScoped<ITestStepService, TestStepService>();
+builder.Services.AddScoped<IReportService, ReportService>();
 
 
 builder.Services.AddControllers(/*Other config*/).AddJsonOptions(options =>

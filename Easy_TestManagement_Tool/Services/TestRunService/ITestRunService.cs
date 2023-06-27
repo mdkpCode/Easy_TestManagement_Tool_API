@@ -4,6 +4,8 @@
     {
         Task<List<TestRun>> GetTestRuns();
 
+        Task<TestRun> GetSingleTestRun(int id);
+
         Task<TestRun> DeleteTestRun(int id);
 
         Task<List<TestRun>> UpdateTestRun(int id, TestRun request);
