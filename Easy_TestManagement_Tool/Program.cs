@@ -1,15 +1,16 @@
 global using Easy_TestManagement_Tool.Models;
 global using Microsoft.EntityFrameworkCore;
 global using Easy_TestManagement_Tool.Enums;
-global using Easy_TestManagement_Tool;
 using Easy_TestManagement_Tool.Data;
 using Easy_TestManagement_Tool.Services.TestCaseService;
 using Easy_TestManagement_Tool.Services.TestRunService;
 using Easy_TestManagement_Tool.Services.TestStepService;
 using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Hosting;
 using Your.Namespace;
 using Easy_TestManagement_Tool.Services.ReportService;
+using Easy_TestManagement_Tool.Services.IssueService;
+using Easy_TestManagement_Tool.Services.TestEnvironmentService;
+using Easy_TestManagement_Tool.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -25,6 +26,8 @@ builder.Services.AddScoped<ITestCaseService, TestCaseService>();
 builder.Services.AddScoped<ITestRunService, TestRunService>();
 builder.Services.AddScoped<ITestStepService, TestStepService>();
 builder.Services.AddScoped<IReportService, ReportService>();
+builder.Services.AddScoped<IIssueService, IssueService>();
+builder.Services.AddScoped<ITestEnvironmentService, TestEnvironmentService>();
 
 
 builder.Services.AddControllers(/*Other config*/).AddJsonOptions(options =>

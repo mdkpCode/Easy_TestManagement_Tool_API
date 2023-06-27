@@ -35,7 +35,11 @@ namespace Easy_TestManagement_Tool.Data
 
         public DbSet<TestRun> TB_TestRuns { get; set; }
 
+        public DbSet<TestEnvironment> TB_TestEnvironment { get; set; }
+
         public DbSet<TestCaseOnTestRun> TB_TestCaseOnTestRun { get; set; }
+
+        public DbSet<Issue> TB_Issue { get; set; }
 
         //public DbSet<TestStepOnTestRun> TB_TestStepOnTestRun { get; }
 

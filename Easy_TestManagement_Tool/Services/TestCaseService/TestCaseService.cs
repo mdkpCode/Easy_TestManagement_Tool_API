@@ -1,6 +1,4 @@
 ﻿using Easy_TestManagement_Tool.Data;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.EntityFrameworkCore;
 
 namespace Easy_TestManagement_Tool.Services.TestCaseService
 {

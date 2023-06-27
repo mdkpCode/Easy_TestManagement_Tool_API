@@ -1,12 +1,9 @@
 ﻿using Easy_TestManagement_Tool.Data;
-using Easy_TestManagement_Tool.Services.TestRunService;
 using PdfSharpCore.Drawing;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.Processing;
-using System;
-using System.IO;
-using System.Threading.Tasks;
+
 
 namespace Easy_TestManagement_Tool.Services.ReportService
 {
