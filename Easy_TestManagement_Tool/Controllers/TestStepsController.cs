@@ -15,14 +15,6 @@ namespace Easy_TestManagement_Tool.Controllers
     [ApiController]
     public class TestStepsController : ControllerBase
     {
-        /*
-        Task<List<TestStep>> GetSteps(int testCaseId);
-
-        Task<TestStep> DeleteStep(int testCaseId);
-
-        Task<List<TestCase>> UpdateStep(int testCaseId, TestStep request);
-         */
-
         private readonly ITestStepService _testStepService;
 
         public TestStepsController(ITestStepService testStepService)
