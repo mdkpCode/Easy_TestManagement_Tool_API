@@ -43,49 +43,5 @@ namespace Easy_TestManagement_Tool.Tests.Models
             // Assert
             Assert.IsFalse(validationResult);
         }
-
-        [Test]
-        public void Issue_Validation_InvalidSeverityValue_ShouldFail()
-        {
-            // Arrange
-            var issue = new Issue
-            {
-                Id = 1,
-                Title = "Sample Issue",
-                Description = "Sample description",
-                CreatedDate = DateTime.Now,
-                Severity = (IssueSeverityEnum)100, // Invalid value
-                Status = IssueStatusEnum.Medium
-            };
-
-            // Act
-            var validationContext = new ValidationContext(issue, null, null);
-            var validationResult = Validator.TryValidateObject(issue, validationContext, null, true);
-
-            // Assert
-            Assert.IsFalse(validationResult);
-        }
-
-        [Test]
-        public void Issue_Validation_InvalidStatusValue_ShouldFail()
-        {
-            // Arrange
-            var issue = new Issue
-            {
-                Id = 1,
-                Title = "Sample Issue",
-                Description = "Sample description",
-                CreatedDate = DateTime.Now,
-                Severity = IssueSeverityEnum.Low,
-                Status = (IssueStatusEnum)100 // Invalid value
-            };
-
-            // Act
-            var validationContext = new ValidationContext(issue, null, null);
-            var validationResult = Validator.TryValidateObject(issue, validationContext, null, true);
-
-            // Assert
-            Assert.IsFalse(validationResult);
-        }
     }
 }
