@@ -1,126 +1,70 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Easy_TestManagement_Tool.Data;
-using Easy_TestManagement_Tool.Models;
 using Easy_TestManagement_Tool.Services.TestRunService;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Easy_TestManagement_Tool.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
-    public class TestRunsController : ControllerBase
+    [Route("api/[controller]")]
+    public class TestRunController : ControllerBase
     {
         private readonly ITestRunService _testRunService;
 
-        public TestRunsController(ITestRunService testRunService)
+        public TestRunController(ITestRunService testRunService)
         {
             _testRunService = testRunService;
         }
 
-        // GET: api/TestRuns
+        [HttpGet("{id}")]
+        public async Task<ActionResult<TestRun>> GetSingleTestRun(int id)
+        {
+            var testRun = await _testRunService.GetSingleTestRun(id);
+
+            if (testRun == null)
+                return NotFound();
+
+            return testRun;
+        }
+
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TestRun>>> GetTestRuns()
+        public async Task<ActionResult<List<TestRun>>> GetTestRuns()
         {
             var testRuns = await _testRunService.GetTestRuns();
 
             if (testRuns == null)
-            {
                 return NotFound();
-            }
+
             return testRuns;
         }
 
-        // GET: api/TestRuns/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<TestRun>> GetTestRun(int id)
+        [HttpPost]
+        public async Task<ActionResult<List<TestRun>>> CreateTestRun(TestRun testRun)
         {
-            var testRuns = _testRunService.GetSingleTestRun(id);
+            var createdTestRuns = await _testRunService.CreateTestRun(testRun);
 
-            if (testRuns == null)
-            {
-                return NotFound();
-            }
-            return await testRuns; ;
-
-
+            return createdTestRuns;
         }
 
-        /*
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<TestRun>> DeleteTestRun(int id)
+        {
+            var deletedTestRun = await _testRunService.DeleteTestRun(id);
 
-                // PUT: api/TestRuns/5
-                // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-                [HttpPut("{id}")]
-                public async Task<IActionResult> PutTestRun(int id, TestRun testRun)
-                {
-                    if (id != testRun.Id)
-                    {
-                        return BadRequest();
-                    }
+            if (deletedTestRun == null)
+                return NotFound();
 
-                    _context.Entry(testRun).State = EntityState.Modified;
+            return deletedTestRun;
+        }
 
-                    try
-                    {
-                        await _context.SaveChangesAsync();
-                    }
-                    catch (DbUpdateConcurrencyException)
-                    {
-                        if (!TestRunExists(id))
-                        {
-                            return NotFound();
-                        }
-                        else
-                        {
-                            throw;
-                        }
-                    }
+        [HttpPut("{id}")]
+        public async Task<ActionResult<List<TestRun>>> UpdateTestRun(int id, TestRun request)
+        {
+            var updatedTestRuns = await _testRunService.UpdateTestRun(id, request);
 
-                    return NoContent();
-                }
-
-                // POST: api/TestRuns
-                // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-                [HttpPost]
-                public async Task<ActionResult<TestRun>> PostTestRun(TestRun testRun)
-                {
-                  if (_context.TB_TestRuns == null)
-                  {
-                      return Problem("Entity set 'DataContext.TB_TestRuns'  is null.");
-                  }
-                    _context.TB_TestRuns.Add(testRun);
-                    await _context.SaveChangesAsync();
-
-                    return CreatedAtAction("GetTestRun", new { id = testRun.Id }, testRun);
-                }
-
-                // DELETE: api/TestRuns/5
-                [HttpDelete("{id}")]
-                public async Task<IActionResult> DeleteTestRun(int id)
-                {
-                    if (_context.TB_TestRuns == null)
-                    {
-                        return NotFound();
-                    }
-                    var testRun = await _context.TB_TestRuns.FindAsync(id);
-                    if (testRun == null)
-                    {
-                        return NotFound();
-                    }
-
-                    _context.TB_TestRuns.Remove(testRun);
-                    await _context.SaveChangesAsync();
-
-                    return NoContent();
-                }
-
-                private bool TestRunExists(int id)
-                {
-                    return (_context.TB_TestRuns?.Any(e => e.Id == id)).GetValueOrDefault();
-                }*/
+            return updatedTestRuns;
+        }
     }
 }
